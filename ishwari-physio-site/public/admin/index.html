@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Dr. Ishwari Pethkar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F8F5;
+    --bg-alt: #EDF2ED;
+    --card: #FFFFFF;
+    --ink: #1C2E2A;
+    --ink-soft: #52645F;
+    --primary: #4F7C6E;
+    --primary-dark: #2E5148;
+    --accent: #E0966A;
+    --danger: #B3462C;
+    --line: #DCE5DD;
+    --radius: 16px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{
+    font-family:'Public Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height:100vh;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; }
+  button{ font-family:inherit; cursor:pointer; }
+  input, textarea, select{ font-family:inherit; }
+
+  /* ---------- login screen ---------- */
+  #loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .login-card{
+    background:#fff;
+    width:100%;
+    max-width:380px;
+    padding:40px 34px;
+    border-radius: 22px;
+    box-shadow: 0 30px 60px -24px rgba(28,46,42,0.25);
+    border:1px solid var(--line);
+  }
+  .login-card .mark{
+    width:44px;height:44px;border-radius:50%;
+    background: conic-gradient(from 210deg, var(--primary), var(--accent), var(--primary));
+    margin-bottom:18px;
+  }
+  .login-card h1{ font-size:1.5rem; margin-bottom:6px; }
+  .login-card p.sub{ color:var(--ink-soft); font-size:.9rem; margin-bottom:26px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:.78rem; font-weight:600; color:var(--ink-soft); margin-bottom:6px; }
+  .field input{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:11px 13px;
+    font-size:.92rem;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .field input:focus{ outline:none; border-color:var(--primary); }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 20px; border-radius:100px; border:none;
+    font-weight:600; font-size:.92rem;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .btn-primary{ background:var(--primary-dark); color:#fff; width:100%; }
+  .btn-primary:hover{ background:var(--primary); }
+  .btn-primary:disabled{ opacity:.6; cursor:default; }
+  .btn-ghost{ background:transparent; border:1.5px solid var(--line); color:var(--ink); }
+  .btn-ghost:hover{ border-color:var(--primary); }
+  .btn-danger{ background:#FBEAE5; color:var(--danger); }
+  .btn-danger:hover{ background:#F6D9CF; }
+  .error-msg{ color:var(--danger); font-size:.85rem; margin-bottom:14px; display:none; }
+
+  /* ---------- dashboard shell ---------- */
+  #dashboard{ display:none; min-height:100vh; }
+  .shell{ display:flex; min-height:100vh; }
+  .sidebar{
+    width:230px; flex-shrink:0;
+    background:#fff; border-right:1px solid var(--line);
+    padding:26px 18px; display:flex; flex-direction:column;
+  }
+  .sidebar .brand{ display:flex; align-items:center; gap:10px; padding:0 8px 24px; font-weight:600; font-family:'Fraunces',serif; }
+  .sidebar .brand .mark{ width:30px;height:30px;border-radius:50%; background: conic-gradient(from 210deg, var(--primary), var(--accent), var(--primary)); }
+  .side-link{
+    display:flex; align-items:center; gap:10px;
+    padding:11px 14px; border-radius:10px;
+    color:var(--ink-soft); font-size:.9rem; font-weight:500;
+    cursor:pointer; margin-bottom:4px;
+  }
+  .side-link:hover{ background:var(--bg-alt); color:var(--ink); }
+  .side-link.active{ background:var(--primary-dark); color:#fff; }
+  .side-link .badge{
+    margin-left:auto; background:var(--accent); color:#fff;
+    font-size:.7rem; font-weight:700; border-radius:100px; padding:2px 7px;
+  }
+  .side-link.active .badge{ background:rgba(255,255,255,0.25); }
+  .sidebar-footer{ margin-top:auto; padding-top:18px; border-top:1px solid var(--line); }
+  .sidebar-footer .who{ font-size:.78rem; color:var(--ink-soft); margin-bottom:10px; word-break:break-all; }
+
+  .main{ flex:1; padding:34px 40px; max-width:1100px; }
+  .main h2{ font-size:1.6rem; margin-bottom:4px; }
+  .main .sub{ color:var(--ink-soft); font-size:.9rem; margin-bottom:28px; }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .stats-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:30px; }
+  .stat-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; }
+  .stat-card .num{ font-family:'Fraunces',serif; font-size:1.8rem; color:var(--primary-dark); }
+  .stat-card .label{ font-size:.82rem; color:var(--ink-soft); margin-top:4px; }
+
+  table{ width:100%; border-collapse:collapse; background:#fff; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  thead{ background:var(--bg-alt); }
+  th, td{ text-align:left; padding:13px 16px; font-size:.87rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:last-child td{ border-bottom:none; }
+  th{ color:var(--ink-soft); font-weight:600; text-transform:uppercase; letter-spacing:.04em; font-size:.72rem; }
+  .msg-cell{ max-width:260px; color:var(--ink-soft); }
+  .status-pill{
+    display:inline-block; padding:4px 11px; border-radius:100px; font-size:.72rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.03em;
+  }
+  .status-new{ background:#FDECD8; color:#9A5A1E; }
+  .status-contacted{ background:#E1EEE8; color:var(--primary-dark); }
+  .status-done{ background:#E4E9E4; color:var(--ink-soft); }
+  select.status-select{ border:1px solid var(--line); border-radius:8px; padding:5px 8px; font-size:.8rem; background:var(--bg); }
+  .row-actions{ display:flex; gap:8px; }
+  .icon-btn{
+    border:1px solid var(--line); background:#fff; border-radius:8px;
+    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:hover{ border-color:var(--danger); color:var(--danger); }
+  .empty-state{ text-align:center; padding:50px 20px; color:var(--ink-soft); background:#fff; border:1px dashed var(--line); border-radius:var(--radius); }
+
+  /* blog panel */
+  .blog-toolbar{ display:flex; justify-content:flex-end; margin-bottom:16px; }
+  .post-list{ display:flex; flex-direction:column; gap:12px; }
+  .post-row{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px; display:flex; gap:16px; align-items:center;
+  }
+  .post-row img{ width:70px; height:52px; object-fit:cover; border-radius:8px; flex-shrink:0; }
+  .post-row .info{ flex:1; min-width:0; }
+  .post-row .info h4{ font-size:.95rem; font-weight:600; margin-bottom:4px; }
+  .post-row .info p{ font-size:.8rem; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .post-row .meta{ display:flex; gap:8px; align-items:center; flex-shrink:0; }
+  .cat-pill{ background:var(--accent-soft, #F4DCC9); color:var(--primary-dark); font-size:.7rem; font-weight:700; padding:4px 10px; border-radius:100px; }
+
+  /* modal */
+  .modal-backdrop{
+    display:none; position:fixed; inset:0; background:rgba(28,46,42,0.45);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal{
+    background:#fff; border-radius:20px; width:100%; max-width:520px;
+    padding:30px; max-height:90vh; overflow-y:auto;
+  }
+  .modal h3{ font-size:1.2rem; margin-bottom:18px; }
+  .modal .field{ margin-bottom:14px; }
+  .modal input, .modal textarea{
+    width:100%; border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.9rem; background:var(--bg);
+  }
+  .modal-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:20px; }
+
+  /* photo settings */
+  .photo-settings-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .photo-setting-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:20px; }
+  .photo-setting-card h4{ font-size:1rem; margin-bottom:4px; }
+  .photo-setting-card p{ font-size:.82rem; color:var(--ink-soft); margin-bottom:14px; }
+  .photo-preview{
+    width:100%; height:180px; object-fit:cover; border-radius:12px;
+    margin-bottom:14px; background:var(--bg-alt); border:1px solid var(--line);
+  }
+  .upload-btn{ display:inline-flex; cursor:pointer; }
+  .upload-status{ font-size:.8rem; margin-top:10px; color:var(--primary-dark); min-height:1em; }
+  .upload-status.error{ color:var(--danger); }
+
+  /* color grid */
+  .color-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; margin-bottom:22px; }
+  .color-field{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:12px; }
+  .color-field input[type="color"]{
+    width:42px; height:42px; border:none; border-radius:10px; padding:0; cursor:pointer; background:none; flex-shrink:0;
+  }
+  .color-field .cf-info{ flex:1; min-width:0; }
+  .color-field .cf-info label{ display:block; font-size:.82rem; font-weight:600; margin-bottom:4px; }
+  .color-field .cf-info input[type="text"]{
+    width:100%; border:1px solid var(--line); border-radius:6px; padding:4px 8px; font-size:.78rem;
+    font-family:monospace; background:var(--bg);
+  }
+  .color-actions{ display:flex; gap:12px; }
+
+  /* image URL + upload row inside modal */
+  .image-input-row{ display:flex; gap:8px; align-items:center; }
+  .image-input-row input[type="text"]{ flex:1; }
+  .small-upload-btn{
+    flex-shrink:0; border:1.5px solid var(--line); background:#fff; border-radius:10px;
+    padding:9px 12px; font-size:.8rem; cursor:pointer; white-space:nowrap;
+  }
+  .small-upload-btn:hover{ border-color:var(--primary); }
+
+  @media (max-width: 800px){
+    .shell{ flex-direction:column; }
+    .sidebar{ width:100%; flex-direction:row; align-items:center; padding:14px 18px; overflow-x:auto; }
+    .sidebar .brand{ padding:0 12px 0 0; }
+    .sidebar-footer{ display:none; }
+    .main{ padding:24px 20px; }
+    .stats-row{ grid-template-columns:1fr; }
+    table{ font-size:.8rem; }
+    .post-row{ flex-wrap:wrap; }
+    .photo-settings-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="mark"></div>
+    <h1>Admin Panel</h1>
+    <p class="sub">Sign in to manage bookings and blog posts for Dr. Ishwari Pethkar's site.</p>
+    <p class="error-msg" id="loginError"></p>
+    <form id="loginForm">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@email.com" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary" type="submit" id="loginBtn">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="mark"></span> Admin</div>
+      <div class="side-link active" data-panel="overview">Overview</div>
+      <div class="side-link" data-panel="bookings">Bookings <span class="badge" id="newBadge" style="display:none;"></span></div>
+      <div class="side-link" data-panel="blog">Blog Posts</div>
+      <div class="side-link" data-panel="photos">Site Photos</div>
+      <div class="side-link" data-panel="colors">Colors & Theme</div>
+      <a href="/" class="side-link" style="text-decoration:none;" target="_blank">View Site ↗</a>
+      <div class="sidebar-footer">
+        <div class="who" id="whoAmI"></div>
+        <button class="btn btn-ghost" id="logoutBtn" style="width:100%;">Log Out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- Overview -->
+      <section class="panel active" id="panel-overview">
+        <h2>Overview</h2>
+        <p class="sub">A quick snapshot of activity on the site.</p>
+        <div class="stats-row">
+          <div class="stat-card"><div class="num" id="statTotalBookings">0</div><div class="label">Total requests</div></div>
+          <div class="stat-card"><div class="num" id="statNewBookings">0</div><div class="label">New / unread</div></div>
+          <div class="stat-card"><div class="num" id="statPosts">0</div><div class="label">Blog posts</div></div>
+        </div>
+      </section>
+
+      <!-- Bookings -->
+      <section class="panel" id="panel-bookings">
+        <h2>Bookings & Messages</h2>
+        <p class="sub">Appointment requests submitted from the contact form.</p>
+        <div id="bookingsWrap"></div>
+      </section>
+
+      <!-- Blog -->
+      <section class="panel" id="panel-blog">
+        <h2>Blog Posts</h2>
+        <p class="sub">Posts shown in the "From the Blog" section of the site.</p>
+        <div class="blog-toolbar">
+          <button class="btn btn-primary" id="newPostBtn">+ New Post</button>
+        </div>
+        <div class="post-list" id="postsWrap"></div>
+      </section>
+
+      <!-- Site Photos -->
+      <section class="panel" id="panel-photos">
+        <h2>Site Photos</h2>
+        <p class="sub">Replace the hero photo and the about-section photo with images from your device.</p>
+        <div class="photo-settings-grid">
+          <div class="photo-setting-card">
+            <h4>Hero Photo</h4>
+            <p>Shown at the top right of the homepage.</p>
+            <img id="heroPreview" class="photo-preview" src="" alt="Hero preview">
+            <label class="btn btn-ghost upload-btn">
+              Choose Photo From Device
+              <input type="file" accept="image/*" id="heroFileInput" hidden>
+            </label>
+            <p class="upload-status" id="heroUploadStatus"></p>
+          </div>
+          <div class="photo-setting-card">
+            <h4>About Photo</h4>
+            <p>Shown in the "About Me" section.</p>
+            <img id="aboutPreview" class="photo-preview" src="" alt="About preview">
+            <label class="btn btn-ghost upload-btn">
+              Choose Photo From Device
+              <input type="file" accept="image/*" id="aboutFileInput" hidden>
+            </label>
+            <p class="upload-status" id="aboutUploadStatus"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Colors & Theme -->
+      <section class="panel" id="panel-colors">
+        <h2>Colors & Theme</h2>
+        <p class="sub">Change the colors used across the whole site. Updates apply live once saved.</p>
+        <div class="color-grid" id="colorGrid"></div>
+        <div class="color-actions">
+          <button class="btn btn-primary" id="saveThemeBtn">Save Colors</button>
+          <button class="btn btn-ghost" id="resetThemeBtn">Reset to Default</button>
+        </div>
+        <p class="upload-status" id="themeStatus"></p>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Post editor modal -->
+<div class="modal-backdrop" id="postModalBackdrop">
+  <div class="modal">
+    <h3 id="postModalTitle">New Post</h3>
+    <form id="postForm">
+      <input type="hidden" id="postId">
+      <div class="field"><label>Title</label><input type="text" id="postTitle" required></div>
+      <div class="field"><label>Category</label><input type="text" id="postCategory" placeholder="e.g. Recovery"></div>
+      <div class="field"><label>Excerpt (shown on the card)</label><textarea id="postExcerpt" rows="2" required></textarea></div>
+      <div class="field"><label>Full content</label><textarea id="postContent" rows="4"></textarea></div>
+      <div class="field">
+        <label>Cover Photo</label>
+        <div class="image-input-row">
+          <input type="text" id="postImage" placeholder="https://... or upload a photo">
+          <label class="small-upload-btn">
+            Upload
+            <input type="file" accept="image/*" id="postFileInput" hidden>
+          </label>
+        </div>
+        <p class="upload-status" id="postUploadStatus"></p>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="postPublished" checked style="width:auto; margin-right:6px;">Published (visible on the site)</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="postCancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="postSaveBtn">Save Post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, {
+    headers: { 'Content-Type': 'application/json' },
+    ...opts
+  });
+  if (res.status === 401) {
+    showLogin();
+    throw new Error('unauthorized');
+  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+function showLogin(){ $('#loginScreen').style.display='flex'; $('#dashboard').style.display='none'; }
+function showDashboard(email){
+  $('#loginScreen').style.display='none';
+  $('#dashboard').style.display='block';
+  $('#whoAmI').textContent = 'Signed in as ' + email;
+  loadOverview(); loadBookings(); loadPosts(); loadSettings();
+}
+
+// ---- login ----
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#loginBtn');
+  const errEl = $('#loginError');
+  errEl.style.display = 'none';
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  try {
+    const data = await api('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email: $('#loginEmail').value, password: $('#loginPassword').value })
+    });
+    showDashboard(data.email);
+  } catch (err) {
+    errEl.textContent = err.message === 'unauthorized' ? 'Invalid email or password.' : err.message;
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+});
+
+$('#logoutBtn').addEventListener('click', async () => {
+  await api('/api/auth/logout', { method: 'POST' });
+  showLogin();
+});
+
+// ---- sidebar nav ----
+$$('.side-link[data-panel]').forEach(link => {
+  link.addEventListener('click', () => {
+    $$('.side-link[data-panel]').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    $$('.panel').forEach(p => p.classList.remove('active'));
+    $('#panel-' + link.dataset.panel).classList.add('active');
+  });
+});
+
+// ---- overview ----
+async function loadOverview(){
+  try {
+    const [bookings, posts] = await Promise.all([api('/api/bookings'), api('/api/blog/all')]);
+    $('#statTotalBookings').textContent = bookings.length;
+    const newCount = bookings.filter(b => b.status === 'new').length;
+    $('#statNewBookings').textContent = newCount;
+    $('#statPosts').textContent = posts.length;
+    const badge = $('#newBadge');
+    if (newCount > 0) { badge.style.display='inline-block'; badge.textContent = newCount; }
+    else badge.style.display = 'none';
+  } catch(e) {}
+}
+
+// ---- bookings ----
+async function loadBookings(){
+  const wrap = $('#bookingsWrap');
+  wrap.innerHTML = '<p style="color:var(--ink-soft)">Loading...</p>';
+  try {
+    const bookings = await api('/api/bookings');
+    if (!bookings.length) {
+      wrap.innerHTML = '<div class="empty-state">No appointment requests yet. New submissions from the contact form will show up here.</div>';
+      return;
+    }
+    wrap.innerHTML = `
+      <table>
+        <thead><tr><th>Name</th><th>Contact</th><th>Message</th><th>Status</th><th>Date</th><th></th></tr></thead>
+        <tbody>
+          ${bookings.map(b => `
+            <tr data-id="${b.id}">
+              <td><strong>${escapeHtml(b.name)}</strong></td>
+              <td>${escapeHtml(b.email)}<br><span style="color:var(--ink-soft)">${escapeHtml(b.phone)}</span></td>
+              <td class="msg-cell">${escapeHtml(b.message) || '<span style="color:var(--ink-soft)">—</span>'}</td>
+              <td>
+                <select class="status-select" data-id="${b.id}">
+                  <option value="new" ${b.status==='new'?'selected':''}>New</option>
+                  <option value="contacted" ${b.status==='contacted'?'selected':''}>Contacted</option>
+                  <option value="done" ${b.status==='done'?'selected':''}>Done</option>
+                </select>
+              </td>
+              <td>${new Date(b.createdAt).toLocaleDateString()}</td>
+              <td><button class="icon-btn delete-booking" data-id="${b.id}" title="Delete">✕</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>`;
+
+    $$('.status-select').forEach(sel => {
+      sel.addEventListener('change', async () => {
+        await api('/api/bookings/' + sel.dataset.id, { method:'PATCH', body: JSON.stringify({ status: sel.value }) });
+        loadOverview();
+      });
+    });
+    $$('.delete-booking').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('Delete this booking request?')) return;
+        await api('/api/bookings/' + btn.dataset.id, { method:'DELETE' });
+        loadBookings(); loadOverview();
+      });
+    });
+  } catch(e) {
+    wrap.innerHTML = '<div class="empty-state">Could not load bookings.</div>';
+  }
+}
+
+// ---- blog posts ----
+async function loadPosts(){
+  const wrap = $('#postsWrap');
+  wrap.innerHTML = '<p style="color:var(--ink-soft)">Loading...</p>';
+  try {
+    const posts = await api('/api/blog/all');
+    if (!posts.length) {
+      wrap.innerHTML = '<div class="empty-state">No blog posts yet. Click "New Post" to add your first one.</div>';
+      return;
+    }
+    wrap.innerHTML = posts.map(p => `
+      <div class="post-row" data-id="${p.id}">
+        <img src="${escapeHtml(p.image)}" alt="">
+        <div class="info">
+          <h4>${escapeHtml(p.title)} ${p.published ? '' : '<span style="color:var(--ink-soft); font-weight:400;">(draft)</span>'}</h4>
+          <p>${escapeHtml(p.excerpt)}</p>
+        </div>
+        <div class="meta">
+          <span class="cat-pill">${escapeHtml(p.category)}</span>
+          <button class="icon-btn edit-post" data-id="${p.id}" title="Edit">✎</button>
+          <button class="icon-btn delete-post" data-id="${p.id}" title="Delete">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    $$('.edit-post').forEach(btn => btn.addEventListener('click', () => openPostModal(posts.find(p => p.id === btn.dataset.id))));
+    $$('.delete-post').forEach(btn => btn.addEventListener('click', async () => {
+      if (!confirm('Delete this post?')) return;
+      await api('/api/blog/' + btn.dataset.id, { method:'DELETE' });
+      loadPosts(); loadOverview();
+    }));
+  } catch(e) {
+    wrap.innerHTML = '<div class="empty-state">Could not load posts.</div>';
+  }
+}
+
+// ---- site settings: colors + photos ----
+const THEME_LABELS = {
+  bg: 'Page Background',
+  bgAlt: 'Section Background',
+  card: 'Card / Panel Background',
+  ink: 'Main Text Color',
+  inkSoft: 'Muted Text Color',
+  primary: 'Primary Brand Color',
+  primaryDark: 'Primary Dark (buttons, headings)',
+  accent: 'Accent Color',
+  accentSoft: 'Accent Soft (tags, highlights)',
+  line: 'Border / Line Color'
+};
+
+let currentTheme = {};
+
+function renderColorGrid(theme){
+  currentTheme = { ...theme };
+  const grid = $('#colorGrid');
+  grid.innerHTML = Object.keys(THEME_LABELS).map(key => `
+    <div class="color-field">
+      <input type="color" data-key="${key}" value="${theme[key] || '#ffffff'}">
+      <div class="cf-info">
+        <label>${THEME_LABELS[key]}</label>
+        <input type="text" data-key-text="${key}" value="${theme[key] || ''}">
+      </div>
+    </div>
+  `).join('');
+
+  // keep the color swatch and the hex text box in sync
+  $$('#colorGrid input[type="color"]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      currentTheme[inp.dataset.key] = inp.value;
+      grid.querySelector(`input[data-key-text="${inp.dataset.key}"]`).value = inp.value;
+    });
+  });
+  $$('#colorGrid input[type="text"]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      const val = inp.value.trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+        currentTheme[inp.dataset.keyText] = val;
+        grid.querySelector(`input[data-key="${inp.dataset.keyText}"]`).value = val;
+      }
+    });
+  });
+}
+
+async function loadSettings(){
+  try {
+    const settings = await api('/api/settings');
+    renderColorGrid(settings.theme);
+    if (settings.siteImages) {
+      $('#heroPreview').src = settings.siteImages.hero;
+      $('#aboutPreview').src = settings.siteImages.about;
+    }
+  } catch(e) {}
+}
+
+$('#saveThemeBtn').addEventListener('click', async () => {
+  const statusEl = $('#themeStatus');
+  statusEl.textContent = 'Saving...'; statusEl.classList.remove('error');
+  try {
+    const updated = await api('/api/settings/theme', { method:'PUT', body: JSON.stringify(currentTheme) });
+    renderColorGrid(updated);
+    statusEl.textContent = 'Saved! Refresh the site to see the new colors.';
+  } catch(e) {
+    statusEl.textContent = 'Could not save colors.'; statusEl.classList.add('error');
+  }
+});
+
+$('#resetThemeBtn').addEventListener('click', async () => {
+  if (!confirm('Reset all colors back to the original defaults?')) return;
+  const statusEl = $('#themeStatus');
+  try {
+    const reset = await api('/api/settings/theme/reset', { method:'POST' });
+    renderColorGrid(reset);
+    statusEl.textContent = 'Colors reset to default.';
+  } catch(e) {
+    statusEl.textContent = 'Could not reset colors.'; statusEl.classList.add('error');
+  }
+});
+
+// generic uploader: sends a File to the backend, returns the saved URL
+async function uploadFile(file){
+  const formData = new FormData();
+  formData.append('image', file);
+  const res = await fetch('/api/settings/upload', { method: 'POST', body: formData });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Upload failed.');
+  return data.url;
+}
+
+function wireSitePhotoUpload(inputId, previewId, statusId, imageKey){
+  $(inputId).addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const statusEl = $(statusId);
+    statusEl.textContent = 'Uploading...'; statusEl.classList.remove('error');
+    try {
+      const url = await uploadFile(file);
+      await api('/api/settings/images', { method:'PUT', body: JSON.stringify({ [imageKey]: url }) });
+      $(previewId).src = url;
+      statusEl.textContent = 'Photo updated! It now shows live on the site.';
+    } catch(err) {
+      statusEl.textContent = err.message; statusEl.classList.add('error');
+    }
+  });
+}
+wireSitePhotoUpload('#heroFileInput', '#heroPreview', '#heroUploadStatus', 'hero');
+wireSitePhotoUpload('#aboutFileInput', '#aboutPreview', '#aboutUploadStatus', 'about');
+
+// upload a photo from device straight into the blog post image field
+$('#postFileInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const statusEl = $('#postUploadStatus');
+  statusEl.textContent = 'Uploading...'; statusEl.classList.remove('error');
+  try {
+    const url = await uploadFile(file);
+    $('#postImage').value = url;
+    statusEl.textContent = 'Photo uploaded and ready to save.';
+  } catch(err) {
+    statusEl.textContent = err.message; statusEl.classList.add('error');
+  }
+});
+
+// ---- post modal ----
+function openPostModal(post){
+  $('#postModalTitle').textContent = post ? 'Edit Post' : 'New Post';
+  $('#postId').value = post ? post.id : '';
+  $('#postTitle').value = post ? post.title : '';
+  $('#postCategory').value = post ? post.category : '';
+  $('#postExcerpt').value = post ? post.excerpt : '';
+  $('#postContent').value = post ? post.content : '';
+  $('#postImage').value = post ? post.image : '';
+  $('#postPublished').checked = post ? post.published : true;
+  $('#postUploadStatus').textContent = '';
+  $('#postModalBackdrop').classList.add('open');
+}
+function closePostModal(){ $('#postModalBackdrop').classList.remove('open'); }
+
+$('#newPostBtn').addEventListener('click', () => openPostModal(null));
+$('#postCancelBtn').addEventListener('click', closePostModal);
+$('#postModalBackdrop').addEventListener('click', e => { if (e.target === e.currentTarget) closePostModal(); });
+
+$('#postForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const id = $('#postId').value;
+  const payload = {
+    title: $('#postTitle').value,
+    category: $('#postCategory').value || 'General',
+    excerpt: $('#postExcerpt').value,
+    content: $('#postContent').value,
+    image: $('#postImage').value,
+    published: $('#postPublished').checked
+  };
+  const btn = $('#postSaveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    if (id) await api('/api/blog/' + id, { method:'PUT', body: JSON.stringify(payload) });
+    else await api('/api/blog', { method:'POST', body: JSON.stringify(payload) });
+    closePostModal();
+    loadPosts(); loadOverview();
+  } catch(err) {
+    alert(err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save Post';
+  }
+});
+
+function escapeHtml(str){
+  if (str === undefined || str === null) return '';
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+// ---- boot: check if already logged in ----
+(async function boot(){
+  try {
+    const me = await api('/api/auth/me');
+    showDashboard(me.email);
+  } catch(e) {
+    showLogin();
+  }
+})();
+</script>
+</body>
+</html>

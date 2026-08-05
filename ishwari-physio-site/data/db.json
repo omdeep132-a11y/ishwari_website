@@ -1,0 +1,74 @@
+{
+  "admin": {
+    "email": "ishwaripethkar49@gmail.com",
+    "passwordHash": "$2a$10$eFdOiLkNGM7yu5hyDtcOEukciU8Q7BkrXB2vCrhiAAo9MI9slITcS"
+  },
+  "bookings": [
+    {
+      "id": "16515780-0bdc-4f20-981b-ebeabbe0acec",
+      "name": "omya",
+      "phone": "829075332",
+      "email": "om@gmail.com",
+      "message": "lundu dukhtoy",
+      "status": "new",
+      "createdAt": "2026-08-05T12:57:28.045Z"
+    },
+    {
+      "id": "01761654-291c-4e66-a7a0-fb10d1012423",
+      "name": "omdeep Jadhav",
+      "phone": "89992800098",
+      "email": "omdeep132@gmail.com",
+      "message": "why",
+      "status": "contacted",
+      "createdAt": "2026-07-13T11:23:17.553Z"
+    }
+  ],
+  "posts": [
+    {
+      "id": "p1",
+      "title": "5 Desk Stretches to Save Your Back",
+      "category": "Posture",
+      "excerpt": "Small habit changes that make a big difference for desk workers.",
+      "content": "Full article coming soon.",
+      "image": "https://picsum.photos/seed/blog1physio/400/260",
+      "published": true,
+      "createdAt": "2026-07-13T11:13:07.314Z"
+    },
+    {
+      "id": "p2",
+      "title": "Understanding Rehab Timelines",
+      "category": "Recovery",
+      "excerpt": "What to realistically expect after an injury, week by week.",
+      "content": "Full article coming soon.",
+      "image": "/uploads/1783941844160-561489422.jpg",
+      "published": true,
+      "createdAt": "2026-07-13T11:13:07.315Z"
+    },
+    {
+      "id": "p3",
+      "title": "Warm-Ups That Actually Prevent Injury",
+      "category": "Sports",
+      "excerpt": "The science-backed way to prep your body before activity.",
+      "content": "Full article coming soon.",
+      "image": "https://picsum.photos/seed/blog3physio/400/260",
+      "published": true,
+      "createdAt": "2026-07-13T11:13:07.315Z"
+    }
+  ],
+  "theme": {
+    "bg": "#F6F8F5",
+    "bgAlt": "#EDF2ED",
+    "card": "#FFFFFF",
+    "ink": "#1C2E2A",
+    "inkSoft": "#52645F",
+    "primary": "#4F7C6E",
+    "primaryDark": "#2E5148",
+    "accent": "#E0966A",
+    "accentSoft": "#F4DCC9",
+    "line": "#DCE5DD"
+  },
+  "siteImages": {
+    "hero": "/uploads/1783941906106-664785429.jpg",
+    "about": "https://picsum.photos/seed/physioclinic/600/700"
+  }
+}

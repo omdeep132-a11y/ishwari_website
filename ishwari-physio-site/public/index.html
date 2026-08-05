@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Ishwari Pethkar — Physiotherapy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F8F5;
+    --bg-alt: #EDF2ED;
+    --card: #FFFFFF;
+    --ink: #1C2E2A;
+    --ink-soft: #52645F;
+    --primary: #4F7C6E;
+    --primary-dark: #2E5148;
+    --accent: #E0966A;
+    --accent-soft: #F4DCC9;
+    --line: #DCE5DD;
+    --radius: 22px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    font-family: 'Public Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3, .display{
+    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  a{ text-decoration:none; color:inherit; }
+  ul{ list-style:none; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- Navbar ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(246,248,245,0.78);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s ease, box-shadow .3s ease;
+  }
+  header.scrolled{
+    border-color: var(--line);
+    box-shadow: 0 6px 24px rgba(28,46,42,0.05);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    height: 84px;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size: 1.15rem;
+    color: var(--primary-dark);
+  }
+  .logo .mark{
+    width: 34px; height:34px;
+    border-radius: 50%;
+    background: conic-gradient(from 210deg, var(--primary), var(--accent), var(--primary));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: inset 0 0 0 3px var(--bg);
+  }
+  .logo .mark svg{ width:18px; height:18px; }
+
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap: 40px;
+  }
+  .nav-links a{
+    font-size: .95rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    position:relative;
+    padding: 4px 0;
+    transition: color .25s ease;
+  }
+  .nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:-2px;
+    width:0%; height:2px;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+  .nav-links a:hover, .nav-links a.active{ color: var(--primary-dark); }
+  .nav-links a:hover::after, .nav-links a.active::after{ width:100%; }
+
+  .nav-cta{
+    background: var(--primary-dark);
+    color:#fff !important;
+    padding: 11px 22px;
+    border-radius: 100px;
+    font-weight:600;
+    font-size: .9rem !important;
+    transition: transform .25s ease, background .25s ease;
+  }
+  .nav-cta:hover{ background: var(--primary); transform: translateY(-2px); }
+  .nav-cta::after{ display:none; }
+
+  .burger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding: 8px;
+  }
+  .burger span{
+    width: 24px; height:2px; background: var(--ink);
+    transition: transform .3s ease, opacity .3s ease;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 88px 0 60px;
+    position: relative;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+    background: var(--accent-soft);
+    padding: 7px 16px;
+    border-radius: 100px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:6px; height:6px;
+    border-radius:50%;
+    background: var(--accent);
+  }
+  .hero h1{
+    font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+    font-weight: 600;
+    line-height: 1.08;
+    margin-bottom: 22px;
+  }
+  .hero h1 em{
+    font-style: italic;
+    color: var(--primary);
+  }
+  .hero p.lead{
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-bottom: 34px;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom: 40px;
+  }
+  .btn{
+    padding: 15px 28px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: .95rem;
+    cursor:pointer;
+    border: none;
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-primary{
+    background: var(--primary-dark);
+    color:#fff;
+    box-shadow: 0 10px 24px rgba(46,81,72,0.25);
+  }
+  .btn-primary:hover{ transform: translateY(-3px); box-shadow: 0 14px 28px rgba(46,81,72,0.32); }
+  .btn-ghost{
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+  .btn-ghost:hover{ border-color: var(--primary); color: var(--primary-dark); }
+
+  .trust-row{
+    display:flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .trust-row div{ display:flex; flex-direction:column; }
+  .trust-row strong{ font-family:'Fraunces',serif; font-size:1.4rem; color: var(--primary-dark); }
+  .trust-row span{ font-size:.8rem; color: var(--ink-soft); }
+
+  /* hero image with goniometer-arc motif (a nod to ROM measurement in physio) */
+  .hero-visual{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .arc-svg{
+    position:absolute;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    z-index:0;
+    animation: rotate-slow 60s linear infinite;
+  }
+  @keyframes rotate-slow{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+  .photo-frame{
+    position:relative;
+    z-index:1;
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 4/5;
+    border-radius: 200px 200px 24px 24px;
+    overflow:hidden;
+    box-shadow: 0 30px 60px -20px rgba(28,46,42,0.35);
+    border: 6px solid var(--card);
+  }
+  .photo-frame img{
+    width:100%; height:100%; object-fit:cover;
+  }
+  .floating-tag{
+    position:absolute;
+    z-index:2;
+    background: var(--card);
+    padding: 12px 18px;
+    border-radius: 16px;
+    box-shadow: 0 14px 30px rgba(28,46,42,0.14);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:.82rem;
+    font-weight:600;
+  }
+  .floating-tag.tag-1{ top: 8%; left: -6%; }
+  .floating-tag.tag-2{ bottom: 10%; right: -8%; }
+  .floating-tag .dot{ width:9px; height:9px; border-radius:50%; background: var(--accent); }
+
+  /* ---------- Name banner ---------- */
+  .name-banner{
+    text-align:center;
+    padding: 50px 0 70px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-top: 20px;
+  }
+  .name-banner .role{
+    font-size: .8rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight:700;
+    margin-bottom: 10px;
+  }
+  .name-banner h2{
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+  }
+  .name-banner p{
+    color: var(--ink-soft);
+    max-width: 560px;
+    margin: 14px auto 0;
+    font-size: .98rem;
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 90px 0; }
+  .section-head{
+    max-width: 620px;
+    margin: 0 auto 56px;
+    text-align:center;
+  }
+  .section-head .eyebrow{ margin-bottom: 16px; }
+  .section-head h2{
+    font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .section-head p{ color: var(--ink-soft); }
+
+  /* ---------- About ---------- */
+  .about{ background: var(--bg-alt); }
+  .about-grid{
+    display:grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 60px;
+    align-items:center;
+  }
+  .about-photo{
+    border-radius: var(--radius);
+    overflow:hidden;
+    box-shadow: 0 24px 50px -18px rgba(28,46,42,0.3);
+  }
+  .about-photo img{ width:100%; height:100%; object-fit:cover; }
+  .about-text h3{ font-size: 1.6rem; margin-bottom: 16px; font-weight:600; }
+  .about-text p{ color: var(--ink-soft); margin-bottom: 16px; }
+  .credential-list{ margin-top: 24px; display:flex; flex-direction:column; gap:14px; }
+  .credential-list li{ display:flex; gap:12px; align-items:flex-start; font-size:.95rem; color:var(--ink); }
+  .credential-list li svg{ flex-shrink:0; margin-top:3px; }
+
+  /* ---------- Services ---------- */
+  .services-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .service-card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 34px 28px;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .service-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -16px rgba(28,46,42,0.2);
+    border-color: var(--primary);
+  }
+  .service-icon{
+    width: 50px; height:50px;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 20px;
+  }
+  .service-card h3{ font-size: 1.15rem; margin-bottom: 10px; font-weight:600; }
+  .service-card p{ color: var(--ink-soft); font-size: .92rem; }
+
+  /* ---------- Process (legit sequence) ---------- */
+  .process{ background: var(--bg-alt); }
+  .process-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-row::before{
+    content:"";
+    position:absolute;
+    top: 26px;
+    left: 8%;
+    right: 8%;
+    height: 1.5px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 10px, transparent 10px 18px);
+    z-index:0;
+  }
+  .process-step{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    padding: 0 16px;
+  }
+  .step-num{
+    width: 52px; height:52px;
+    margin: 0 auto 20px;
+    border-radius:50%;
+    background: var(--card);
+    border: 1.5px solid var(--primary);
+    color: var(--primary-dark);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+  }
+  .process-step h3{ font-size:1.05rem; margin-bottom:8px; }
+  .process-step p{ font-size:.88rem; color: var(--ink-soft); }
+
+  /* ---------- Blog ---------- */
+  .blog-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .blog-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow:hidden;
+    border: 1px solid var(--line);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .blog-card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px -16px rgba(28,46,42,0.2); }
+  .blog-thumb{ height: 170px; overflow:hidden; }
+  .blog-thumb img{ width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
+  .blog-card:hover .blog-thumb img{ transform: scale(1.06); }
+  .blog-body{ padding: 24px; }
+  .blog-cat{ font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color: var(--primary); margin-bottom:10px; }
+  .blog-body h3{ font-size: 1.05rem; margin-bottom: 10px; font-weight:600; line-height:1.35; }
+  .blog-body p{ font-size:.88rem; color: var(--ink-soft); margin-bottom: 14px; }
+  .blog-link{ font-size:.85rem; font-weight:600; color: var(--primary-dark); display:inline-flex; align-items:center; gap:6px; }
+
+  /* ---------- Contact ---------- */
+  .contact{ background: var(--primary-dark); color:#fff; border-radius: 32px; margin: 0 24px; }
+  .contact .wrap{ padding: 0 32px; }
+  .contact-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items:center;
+  }
+  .contact-info .eyebrow{ background: rgba(255,255,255,0.12); color:#fff; }
+  .contact-info h2{ color:#fff; font-size: clamp(1.8rem,3vw,2.4rem); margin-bottom:16px; }
+  .contact-info p{ color: rgba(255,255,255,0.75); margin-bottom: 26px; max-width:420px; }
+  .contact-detail{ display:flex; gap:14px; align-items:center; margin-bottom:16px; font-size:.95rem; }
+  .contact-detail .ic{
+    width:40px; height:40px; border-radius:12px;
+    background: rgba(255,255,255,0.12);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+
+  .form-card{
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 34px;
+    color: var(--ink);
+  }
+  .form-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom:16px; }
+  .form-card label{ font-size:.78rem; font-weight:600; color: var(--ink-soft); margin-bottom:6px; display:block; }
+  .form-card input, .form-card textarea{
+    width:100%;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family:inherit;
+    font-size:.92rem;
+    background: var(--bg);
+    color: var(--ink);
+    transition: border-color .25s ease;
+  }
+  .form-card input:focus, .form-card textarea:focus{ outline:none; border-color: var(--primary); }
+  .form-field{ margin-bottom: 16px; }
+  .form-card .btn-primary{ width:100%; justify-content:center; margin-top:6px; }
+
+  /* ---------- Footer ---------- */
+  footer{ padding: 70px 0 30px; }
+  .footer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap: 40px;
+    flex-wrap:wrap;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 26px;
+  }
+  .footer-cols{ display:flex; gap:70px; flex-wrap:wrap; }
+  .footer-cols h4{ font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:16px; color: var(--ink-soft); }
+  .footer-cols ul{ display:flex; flex-direction:column; gap:10px; }
+  .footer-cols a{ font-size:.92rem; color: var(--ink-soft); transition: color .2s ease; }
+  .footer-cols a:hover{ color: var(--primary-dark); }
+  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.82rem; color: var(--ink-soft); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    .nav-links{
+      position: fixed;
+      top: 84px; left:0; right:0;
+      background: var(--bg);
+      flex-direction:column;
+      align-items:flex-start;
+      padding: 26px 32px;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+      transform: translateY(-130%);
+      transition: transform .35s ease;
+    }
+    .nav-links.open{ transform: translateY(0); }
+    .burger{ display:flex; }
+    .nav-cta{ margin-top: 6px; }
+
+    .hero .wrap{ grid-template-columns: 1fr; }
+    .hero-visual{ order:-1; }
+    .photo-frame{ max-width: 280px; margin: 0 auto; }
+    .hero p.lead{ max-width:none; }
+
+    .about-grid{ grid-template-columns: 1fr; }
+    .services-grid{ grid-template-columns: 1fr 1fr; }
+    .process-row{ grid-template-columns: 1fr 1fr; row-gap: 40px; }
+    .process-row::before{ display:none; }
+    .blog-grid{ grid-template-columns: 1fr; }
+    .contact-grid{ grid-template-columns: 1fr; }
+    .contact{ margin: 0 16px; border-radius:24px; }
+    .form-row{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px){
+    .services-grid{ grid-template-columns: 1fr; }
+    .process-row{ grid-template-columns: 1fr; }
+    .trust-row{ gap:20px; }
+    .wrap{ padding: 0 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <nav class="wrap">
+    <a href="#home" class="logo">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12c2-4 4-6 8-6s6 2 8 6c-2 4-4 6-8 6s-6-2-8-6z" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="2" fill="#fff"/></svg>
+      </span>
+      Dr. Ishwari Pethkar
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#book" class="nav-link">Book</a></li>
+      <li><a href="#counseling" class="nav-link">Counseling</a></li>
+      <li><a href="#blog" class="nav-link">Blog</a></li>
+      <li><a href="#contact" class="nav-link">Contact Us</a></li>
+      <li><a href="#about" class="nav-link">About Me</a></li>
+      <li><a href="#book" class="nav-cta">Book a Session</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-text reveal">
+      <span class="eyebrow">Physiotherapy, personalized</span>
+      <h1>Move well.<br><em>Heal fully.</em></h1>
+      <p class="lead">Gentle, evidence-based physiotherapy care focused on restoring movement, easing pain, and helping you get back to the things you love — one session at a time.</p>
+      <div class="hero-ctas">
+        <a href="#book" class="btn btn-primary">Book a Session →</a>
+        <a href="#about" class="btn btn-ghost">Learn More</a>
+      </div>
+      <div class="trust-row">
+        <div><strong>Final Year</strong><span>BPT Student</span></div>
+        <div><strong>50+</strong><span>Cases Assisted</span></div>
+        <div><strong>1:1</strong><span>Personalized Care</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <svg class="arc-svg" viewBox="0 0 400 400" fill="none">
+        <circle cx="200" cy="200" r="188" stroke="#4F7C6E" stroke-opacity="0.18" stroke-width="1.4" stroke-dasharray="3 9"/>
+        <path d="M200 30 A170 170 0 0 1 370 200" stroke="#E0966A" stroke-opacity="0.55" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M200 30 A170 170 0 0 0 30 200" stroke="#4F7C6E" stroke-opacity="0.45" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div class="floating-tag tag-1"><span class="dot"></span> Pain-free mobility</div>
+      <div class="photo-frame">
+        <img id="heroImage" src="https://picsum.photos/seed/ishwariphysio/500/620" alt="Portrait of Dr. Ishwari Pethkar">
+      </div>
+      <div class="floating-tag tag-2"><span class="dot"></span> Root-cause approach</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="name-banner reveal">
+    <div class="role">Physiotherapist in the making</div>
+    <h2>Dr. Ishwari Pethkar</h2>
+    <p>Final-year Bachelor of Physiotherapy (BPT) student, passionate about musculoskeletal rehabilitation, sports recovery, and helping every patient move through life with confidence and ease.</p>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-photo reveal">
+      <img id="aboutImage" src="https://picsum.photos/seed/physioclinic/600/700" alt="Dr. Ishwari Pethkar at the clinic">
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow">About Me</span>
+      <h3>Care that listens before it treats</h3>
+      <p>I'm Ishwari — currently in my final year of Physiotherapy, training under experienced clinicians while building a practice rooted in empathy and evidence. I believe recovery isn't just about exercises; it's about understanding each person's story, lifestyle, and goals.</p>
+      <p>My focus areas include musculoskeletal pain, post-injury rehabilitation, posture correction, and sports physiotherapy — always with a calm, patient-first approach.</p>
+      <ul class="credential-list">
+        <li>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#4F7C6E" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#4F7C6E" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Final-year BPT student, clinical training in progress
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#4F7C6E" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#4F7C6E" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Hands-on experience in musculoskeletal & sports rehab
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#4F7C6E" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#4F7C6E" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Believer in personalized, root-cause treatment plans
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="counseling">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">What I Help With</span>
+      <h2>Counseling & Treatment Areas</h2>
+      <p>A few of the areas I focus on during sessions — tailored to what your body actually needs.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M4 9l8-6 8 6M4 9v10a2 2 0 002 2h12a2 2 0 002-2V9" stroke="#2E5148" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Posture & Ergonomics</h3>
+        <p>Correcting posture-related strain from desk work, screen time, and daily habits.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="#2E5148" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>Sports Recovery</h3>
+        <p>Rehab plans for sprains, strains, and getting athletes safely back to performance.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2E5148" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="#2E5148" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Post-Injury Rehab</h3>
+        <p>Structured, progressive recovery plans following surgery or injury.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-7 4 14 2-7h4" stroke="#2E5148" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Chronic Pain Management</h3>
+        <p>Long-term strategies for back, neck, and joint pain that won't go away.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1.2 4.5 2.6C12 6.2 13.5 5 15.5 5 19 5 21.5 8.5 21.5 12.5 19 16.65 12 21 12 21z" stroke="#2E5148" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>Wellness Counseling</h3>
+        <p>Guidance on movement, stretching routines, and preventing future injury.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#2E5148" stroke-width="1.6"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#2E5148" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Personalized Plans</h3>
+        <p>Every plan is built around your body, your routine, and your recovery pace.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Process</span>
+      <h2>How a Session Works</h2>
+      <p>A simple four-step journey from first consult to full recovery.</p>
+    </div>
+    <div class="process-row">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <h3>Assess</h3>
+        <p>Understand your history, pain points, and movement patterns.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">02</div>
+        <h3>Plan</h3>
+        <p>Build a treatment plan tailored to your goals and lifestyle.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">03</div>
+        <h3>Treat</h3>
+        <p>Hands-on therapy, guided exercises, and consistent tracking.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">04</div>
+        <h3>Recover</h3>
+        <p>Long-term guidance so progress lasts well beyond sessions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blog" id="blog">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">From the Blog</span>
+      <h2>Notes on Movement & Recovery</h2>
+      <p>Simple, practical reads on staying pain-free and moving better.</p>
+    </div>
+    <div class="blog-grid" id="blogGrid">
+      <!-- Posts are loaded from the backend (/api/blog). These three show up
+           until that finishes loading, and are replaced by real posts once
+           they're added from the admin panel. -->
+      <div class="blog-card reveal in">
+        <div class="blog-thumb"><img src="https://picsum.photos/seed/blog1physio/400/260" alt="Blog placeholder"></div>
+        <div class="blog-body">
+          <div class="blog-cat">Posture</div>
+          <h3>5 Desk Stretches to Save Your Back</h3>
+          <p>Small habit changes that make a big difference for desk workers.</p>
+          <a href="#" class="blog-link">Read more →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal in">
+        <div class="blog-thumb"><img src="https://picsum.photos/seed/blog2physio/400/260" alt="Blog placeholder"></div>
+        <div class="blog-body">
+          <div class="blog-cat">Recovery</div>
+          <h3>Understanding Rehab Timelines</h3>
+          <p>What to realistically expect after an injury, week by week.</p>
+          <a href="#" class="blog-link">Read more →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal in">
+        <div class="blog-thumb"><img src="https://picsum.photos/seed/blog3physio/400/260" alt="Blog placeholder"></div>
+        <div class="blog-body">
+          <div class="blog-cat">Sports</div>
+          <h3>Warm-Ups That Actually Prevent Injury</h3>
+          <p>The science-backed way to prep your body before activity.</p>
+          <a href="#" class="blog-link">Read more →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="book">
+  <div class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact-grid" style="padding: 70px 0;">
+        <div class="contact-info reveal">
+          <span class="eyebrow">Get in Touch</span>
+          <h2>Let's start your recovery journey</h2>
+          <p>Have questions or ready to book a session? Reach out — I typically respond within a day.</p>
+          <div class="contact-detail">
+            <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="#fff" stroke-width="1.5"/><path d="M4 6l8 6 8-6" stroke="#fff" stroke-width="1.5"/></svg></span>
+            ishwari.pethkar@email.com
+          </div>
+          <div class="contact-detail">
+            <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8 9.6a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.8.5 2.6.6a2 2 0 011.1 2.4z" stroke="#fff" stroke-width="1.5"/></svg></span>
+            +91 98765 43210
+          </div>
+          <div class="contact-detail">
+            <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.4 7-12a7 7 0 10-14 0c0 5.6 7 12 7 12z" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="10" r="2.5" stroke="#fff" stroke-width="1.5"/></svg></span>
+            Nashik, Maharashtra, India
+          </div>
+        </div>
+        <form class="form-card reveal" id="bookingForm">
+          <div class="form-row">
+            <div class="form-field">
+              <label>Full Name</label>
+              <input type="text" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-field">
+              <label>Phone</label>
+              <input type="tel" name="phone" placeholder="Your number" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="form-field">
+            <label>Message</label>
+            <textarea rows="3" name="message" placeholder="Tell me a bit about your concern..."></textarea>
+          </div>
+          <p id="bookingFormMsg" style="font-size:.85rem; margin-bottom:12px; display:none;"></p>
+          <button class="btn btn-primary" type="submit">Request Appointment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12c2-4 4-6 8-6s6 2 8 6c-2 4-4 6-8 6s-6-2-8-6z" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="2" fill="#fff"/></svg>
+        </span>
+        Dr. Ishwari Pethkar
+      </div>
+      <div class="footer-cols">
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#counseling">Counseling</a></li>
+            <li><a href="#blog">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get Help</h4>
+          <ul>
+            <li><a href="#book">Book a Session</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dr. Ishwari Pethkar. All rights reserved.</span>
+      <span>Made with care, for better movement.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // apply saved theme colors + hero/about photos (set from the admin panel)
+  const CSS_VAR_MAP = {
+    bg: '--bg', bgAlt: '--bg-alt', card: '--card', ink: '--ink', inkSoft: '--ink-soft',
+    primary: '--primary', primaryDark: '--primary-dark', accent: '--accent',
+    accentSoft: '--accent-soft', line: '--line'
+  };
+  fetch('/api/settings')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(({ theme, siteImages }) => {
+      if (theme) {
+        Object.entries(CSS_VAR_MAP).forEach(([key, cssVar]) => {
+          if (theme[key]) document.documentElement.style.setProperty(cssVar, theme[key]);
+        });
+      }
+      if (siteImages) {
+        if (siteImages.hero) document.getElementById('heroImage').src = siteImages.hero;
+        if (siteImages.about) document.getElementById('aboutImage').src = siteImages.about;
+      }
+    })
+    .catch(() => { /* keep the built-in default look */ });
+
+  // sticky header shadow
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // mobile menu
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // load blog posts from the backend (falls back to the static cards above
+  // if the API isn't reachable, e.g. opening this file without the server running)
+  fetch('/api/blog')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(posts => {
+      if (!posts.length) return;
+      const grid = document.getElementById('blogGrid');
+      grid.innerHTML = posts.map(p => `
+        <div class="blog-card reveal in">
+          <div class="blog-thumb"><img src="${p.image}" alt="${p.title}"></div>
+          <div class="blog-body">
+            <div class="blog-cat">${p.category}</div>
+            <h3>${p.title}</h3>
+            <p>${p.excerpt}</p>
+            <a href="#" class="blog-link">Read more →</a>
+          </div>
+        </div>
+      `).join('');
+    })
+    .catch(() => { /* keep the static fallback cards */ });
+
+  // booking / appointment form
+  const bookingForm = document.getElementById('bookingForm');
+  const bookingFormMsg = document.getElementById('bookingFormMsg');
+  if (bookingForm) {
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = bookingForm.querySelector('button[type="submit"]');
+      const data = Object.fromEntries(new FormData(bookingForm).entries());
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      bookingFormMsg.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error();
+
+        bookingFormMsg.textContent = "Thanks! Your request has been sent — I'll get back to you soon.";
+        bookingFormMsg.style.color = '#2E5148';
+        bookingFormMsg.style.display = 'block';
+        bookingForm.reset();
+      } catch (err) {
+        bookingFormMsg.textContent = 'Something went wrong sending your request. Please try again or reach out by phone/email.';
+        bookingFormMsg.style.color = '#B3462C';
+        bookingFormMsg.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Request Appointment';
+      }
+    });
+  }
+
+  // active link highlighting
+  const sections = document.querySelectorAll('section[id], div[id="contact"]');
+  const navA = document.querySelectorAll('.nav-link');
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navA.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('main section[id], section[id]').forEach(s => spy.observe(s));
+</script>
+
+</body>
+</html>
